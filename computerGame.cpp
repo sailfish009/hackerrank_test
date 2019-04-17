@@ -58,9 +58,10 @@ int computerGame(std::vector<int> a, std::vector<int> b)
     std::chrono::high_resolution_clock::now();
 #endif
 
+  int pair_count = 0;
+
   size_t a_size = a.size();
   size_t b_size = b.size();
-  int pair_count = 0;
   int count = 0;
 
   // array must to be sorted
@@ -68,17 +69,24 @@ int computerGame(std::vector<int> a, std::vector<int> b)
   std::sort(b.begin(), b.end(), std::less<int>());
 
   size_t prev_a = a_size;
-  size_t prev_b = b_size;
+  std::vector<int> dup;
 
   for (size_t i = 0; i < a_size; ++i)
   for (size_t j = 0; j < b_size; ++j)
   {
-    if ( i != prev_a && j != prev_b && GCD(a[i], b[j]) != 1)
+    if ( i != prev_a  && GCD(a[i], b[j]) != 1)
     {
-      prev_a = i;
-      prev_b = j;
-      // printf("%d [%d] [%d]\n", ++count, a[i], b[j]);
-      ++pair_count;
+      if (dup.size() != 0 && std::find(dup.begin(), dup.end(), j) != dup.end())
+      {
+        // printf("duplicated: %d\n", j);
+      }
+      else
+      {
+        // printf("%d [%d] [%d]\n", ++count, a[i], b[j]);
+        prev_a = i;
+        dup.push_back(j);
+        ++pair_count;
+      }
     }
   }
 
