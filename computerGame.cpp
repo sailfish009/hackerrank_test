@@ -36,6 +36,7 @@
 #include <numeric>
 #include <chrono>
 #include <random>
+#include <set>
 
 
 // https://stackoverflow.com/questions/10956543/gcd-function-in-c-sans-cmath-library
@@ -49,21 +50,6 @@ Number GCD(Number u, Number v)
     v = r;
   }
   return u;
-}
-
-// https://stackoverflow.com/questions/18994602/how-to-find-a-value-in-a-sorted-c-vector
-template<class T, class U>
-bool contains(const std::vector<T>& container, const U& v)
-{
-  auto it = 
-    std::lower_bound
-    (
-      container.begin(),
-      container.end(),
-      v,
-      [](const T& l, const U& r){ return l < r; }
-    );
-  return it != container.end() && *it == v;
 }
 
 int computerGame(std::vector<int> a, std::vector<int> b)
@@ -82,21 +68,21 @@ int computerGame(std::vector<int> a, std::vector<int> b)
   std::sort(a.begin(), a.end(), std::less<int>());
   std::sort(b.begin(), b.end(), std::less<int>());
 
-  size_t prev_a = a_size;
-  std::vector<int> dup;
+  std::set<int> dup_a;
+  std::set<int> dup_b;
 
   for (size_t i = 0; i < a_size; ++i)
   for (size_t j = 0; j < b_size; ++j)
   {
     if 
-      ( 
-        (i != prev_a && GCD(a[i], b[j]) != 1) && 
-        (contains(dup, j) == false) 
+      (
+        dup_a.find(a[i]) == dup_a.end() &&
+        dup_b.find(b[j]) == dup_b.end() && 
+        GCD(a[i], b[j]) != 1
       )
     {
-      // printf("[%d] [%d]\n", a[i], b[j]);
-      prev_a = i;
-      dup.push_back(j);
+      dup_a.insert(a[i]);
+      dup_b.insert(b[j]);
       ++pair_count;
     }
   }
