@@ -51,6 +51,21 @@ Number GCD(Number u, Number v)
   return u;
 }
 
+// https://stackoverflow.com/questions/18994602/how-to-find-a-value-in-a-sorted-c-vector
+template<class T, class U>
+bool contains(const std::vector<T>& container, const U& v)
+{
+  auto it = 
+    std::lower_bound
+    (
+      container.begin(),
+      container.end(),
+      v,
+      [](const T& l, const U& r){ return l < r; }
+    );
+  return it != container.end() && *it == v;
+}
+
 int computerGame(std::vector<int> a, std::vector<int> b)
 {
 #if false
@@ -62,7 +77,6 @@ int computerGame(std::vector<int> a, std::vector<int> b)
 
   size_t a_size = a.size();
   size_t b_size = b.size();
-  int count = 0;
 
   // array must to be sorted
   std::sort(a.begin(), a.end(), std::less<int>());
@@ -74,19 +88,16 @@ int computerGame(std::vector<int> a, std::vector<int> b)
   for (size_t i = 0; i < a_size; ++i)
   for (size_t j = 0; j < b_size; ++j)
   {
-    if ( i != prev_a  && GCD(a[i], b[j]) != 1)
+    if 
+      ( 
+        (i != prev_a && GCD(a[i], b[j]) != 1) && 
+        (contains(dup, j) == false) 
+      )
     {
-      if (dup.size() != 0 && std::find(dup.begin(), dup.end(), j) != dup.end())
-      {
-        // printf("duplicated: %d\n", j);
-      }
-      else
-      {
-        // printf("%d [%d] [%d]\n", ++count, a[i], b[j]);
-        prev_a = i;
-        dup.push_back(j);
-        ++pair_count;
-      }
+      // printf("[%d] [%d]\n", a[i], b[j]);
+      prev_a = i;
+      dup.push_back(j);
+      ++pair_count;
     }
   }
 
@@ -160,7 +171,6 @@ int function()
       pair_count = computerGame(a, b);
     }
   }
-
   return pair_count;
 }
 
@@ -177,8 +187,8 @@ int main()
   std::default_random_engine generator;
 	std::uniform_int_distribution<int> distribution(2, dist);
 
-  std::vector<int> a(nrolls);
-  std::vector<int> b(nrolls);
+  std::vector<int> a;
+  std::vector<int> b;
 
   for (int i = 0; i < nrolls; ++i)
   {
