@@ -64,30 +64,20 @@ int computerGame(std::vector<int> a, std::vector<int> b)
   size_t a_size = a.size();
   size_t b_size = b.size();
 
-#if false	
-  // array must to be sorted
-  std::sort(a.begin(), a.end(), std::less<int>());
-  std::sort(b.begin(), b.end(), std::less<int>());
-#endif
-
   std::set<int> dup_a;
   std::set<int> dup_b;
 
   for (size_t i = 0; i < a_size; ++i)
   for (size_t j = 0; j < b_size; ++j)
+  if (GCD(a[i], b[j]) != 1)
   {
-    if 
-      (
-        dup_a.find(a[i]) == dup_a.end() &&
-        dup_b.find(b[j]) == dup_b.end() && 
-        GCD(a[i], b[j]) != 1
-      )
-    {
-      dup_a.insert(a[i]);
-      dup_b.insert(b[j]);
-      ++pair_count;
-    }
+    dup_a.insert(a[i]);
+    dup_b.insert(b[j]);
   }
+	
+  size_t dup_a_size = dup_a.size();
+  size_t dup_b_size = dup_b.size();
+  pair_count = std::min(dup_a_size, dup_b_size);
 
 #if false
   std::chrono::duration<double> time_span = 
