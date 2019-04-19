@@ -64,9 +64,11 @@ int computerGame(std::vector<int> a, std::vector<int> b)
   size_t a_size = a.size();
   size_t b_size = b.size();
 
+#if false	
   // array must to be sorted
   std::sort(a.begin(), a.end(), std::less<int>());
   std::sort(b.begin(), b.end(), std::less<int>());
+#endif
 
   std::set<int> dup_a;
   std::set<int> dup_b;
