@@ -45,9 +45,12 @@ Number GCD(Number u, Number v)
 {
   while (v != 0) 
   {
-    Number r = u % v;
-    u = v;
-    v = r;
+    u %= v;
+    switch(u)
+    {
+    case 0: return v; 
+    default: v %= u; break;
+    }
   }
   return u;
 }
