@@ -36,7 +36,7 @@
 #include <numeric>
 #include <chrono>
 #include <random>
-#include <set>
+#include <unordered_set>
 
 
 // https://stackoverflow.com/questions/10956543/gcd-function-in-c-sans-cmath-library
@@ -67,8 +67,8 @@ int computerGame(std::vector<int> a, std::vector<int> b)
   size_t a_size = a.size();
   size_t b_size = b.size();
 
-  std::set<int> dup_a;
-  std::set<int> dup_b;
+  std::unordered_set<int> dup_a;
+  std::unordered_set<int> dup_b;
 
   for (size_t i = 0; i < a_size; ++i)
   for (size_t j = 0; j < b_size; ++j)
